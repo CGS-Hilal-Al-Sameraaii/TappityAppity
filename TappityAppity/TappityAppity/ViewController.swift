@@ -24,6 +24,9 @@ class ViewController: UIViewController {
     var taps = 0
     var gameStarted = false
     var gameOver = false
+    var colorArray: [UIColor] = [UIColor.red,UIColor.blue,UIColor.green,UIColor.yellow]
+    var lastColor = 1
+    var newColor = Int(arc4random_uniform(4))
     
     @IBAction func tapped() {
         //Triggers multiple times (kinda)
@@ -34,6 +37,7 @@ class ViewController: UIViewController {
         if gameOver != true {
             taps += 1
             displayLabel.text = "\(taps)"
+            setRandomBackgroundColor()
         } else {
             self.alertThisStuff()
         }
@@ -59,7 +63,19 @@ class ViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-
+    
+    
+    //NEEDS WORK ON NUMBER GENERATION
+    func setRandomBackgroundColor() {
+        while newColor == lastColor {
+            newColor = Int(arc4random_uniform(4))
+        }
+        print(lastColor)
+        lastColor = newColor
+        print(newColor)
+        self.view.backgroundColor = colorArray[Int(arc4random_uniform(4))]
+    }
+    
     @IBOutlet weak var displayLabel: UILabel!
     
     @IBOutlet weak var timerLabel: UILabel!
