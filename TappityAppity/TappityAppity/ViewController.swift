@@ -24,9 +24,10 @@ class ViewController: UIViewController {
     var taps = 0
     var gameStarted = false
     var gameOver = false
-    var colorArray: [UIColor] = [UIColor.red,UIColor.blue,UIColor.green,UIColor.yellow]
+    var colorArray: [UIColor] = [UIColor.red,UIColor.blue,UIColor.green,UIColor.yellow,UIColor.purple,UIColor.cyan,
+                                 UIColor.orange,UIColor.white,UIColor.magenta,UIColor.brown, UIColor.darkGray]
     var lastColor = 1
-    var newColor = Int(arc4random_uniform(4))
+    var newColor = Int(arc4random_uniform(10))
     
     @IBAction func tapped() {
         //Triggers multiple times (kinda)
@@ -39,19 +40,31 @@ class ViewController: UIViewController {
             displayLabel.text = "\(taps)"
             setRandomBackgroundColor()
         } else {
-            self.alertThisStuff()
         }
     }
     
     func startTimer() {
         let _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-            if self.time > 0 {
-                self.time -= 1
-                self.timerLabel.text = "\(self.time)"
-            } else {
-                self.gameOver = true
+            if self.gameStarted == true {
+                if self.time > 0 {
+                    self.time -= 1
+                    self.timerLabel.text = "\(self.time)"
+                } else {
+                    self.gameOver = true
+                    self.alertThisStuff()
+                    self.resetGame()
+                }
             }
         }
+    }
+    
+    func resetGame() {
+        gameStarted = false
+        gameOver = false
+        self.time = 30
+        self.timerLabel.text = "\(self.time)"
+        self.taps = 0
+        self.displayLabel.text = "\(taps)"
     }
     
     func alertThisStuff() {
@@ -63,21 +76,24 @@ class ViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    
-    
-    //NEEDS WORK ON NUMBER GENERATION
     func setRandomBackgroundColor() {
         while newColor == lastColor {
-            newColor = Int(arc4random_uniform(4))
+            newColor = Int(arc4random_uniform(10))
         }
         print(lastColor)
         lastColor = newColor
         print(newColor)
-        self.view.backgroundColor = colorArray[Int(arc4random_uniform(4))]
+        print("-")
+        self.view.backgroundColor = colorArray[newColor]
+    }
+    
+    func changeUIButtonPostion() {
     }
     
     @IBOutlet weak var displayLabel: UILabel!
     
     @IBOutlet weak var timerLabel: UILabel!
+    
+    @IBOutlet weak var tappityButton: UIButton!
 
 }
